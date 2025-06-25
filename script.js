@@ -262,7 +262,6 @@ const generateWhatsAppMessage = () => {
 
     // Agrupa as saídas por data
     const groupedByDate = {};
-
     filteredExpenses.forEach(expense => {
         totalValue += parseFloat(expense.received);
 
@@ -277,27 +276,27 @@ const generateWhatsAppMessage = () => {
     message += `*${store}*\n\n`;
     message += `*${driver}*\n\n`;
 
-    for (const [date, expensesOnDate] of Object.entries(groupedByDate)) {
+    // Ordena as datas antes de gerar a mensagem
+    const orderedDates = Object.keys(groupedByDate).sort(); // formato YYYY-MM-DD já permite ordenação correta
 
+    orderedDates.forEach(date => {
+        const [ano, mes, dia] = date.split('-');
+        const formattedDate = `${dia}/${mes}/${ano}`;
+        message += `- Data -> ${formattedDate}\n-`;
 
-
-   const [ano, mes, dia] = date.split('-');
-const formattedDate = `${dia}/${mes}/${ano}`;
-
-    message += `- Data -> ${formattedDate}\n-`;
-
-        expensesOnDate.forEach((expense, index) => {
+        groupedByDate[date].forEach((expense, index) => {
             message += ` Saída ${index + 1} -> Qtd Nfs -> ${expense.nfs || 'X'} - Peso: ${expense.weight}\n`;
         });
 
-        message += `\n`; // Linha em branco entre datas
-    }
+        message += `\n`; // Espaço entre dias
+    });
 
     message += `Total de Saídas: ${totalSaidas} saída${totalSaidas > 1 ? 's' : ''}\n`;
     message += `Valor total: R$ ${totalValue.toFixed(2)}\n`;
 
     return message;
 };
+
 
 // Enviar via WhatsApp
 document.getElementById('send-whatsapp').addEventListener('click', () => {
