@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/leandrocirilojs/TransporteLMR/3d3e0727935835ee42b9aabbca506cea40d3d2db/favicon.svg">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Saídas MRL</title>
+    <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+      
+<style>
+    .input-container {
+  position: relative;
+  width: 100%; /* Ajuste conforme necessário */
+}
+
+.input-container input {
+  width: 100%;
+  padding-right: 40px; /* Espaço para o ícone */
+  box-sizing: border-box;
+}
+
+.input-container i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: white;
+}
+
+.input-container i:hover {
+  color: blue;
+}
+</style>
+    
+</head>
+<body>
+
+    
+<header class="header">
+    <div class="logo">
+        <h1><i class="fa-solid fa-dolly" style="color:#ba7dff ;"></i> MRL Log</h1>
+    </div>
+    <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <nav class="nav" id="nav-links">
+        <header class="whatsapp-header">
+    <div class="whatsapp-logo">
+        
+    
+        </header>
+
+<div class="whatsapp-scheduler-container zap">
+ 
+    
+    
+    
+    <div class="input-container">
+    <input type="number" id="whatsapp-scheduler-number" class="whatsapp-scheduler-input" placeholder="Número com DDD">
+ <i class="fas fa-microphone" onclick="iniciarReconhecimento()"></i>
+    </div> 
+    
+    
+    
+    
+    
+    <!-- Mensagens predefinidas -->
+    <div class="whatsapp-scheduler-message-options">
+            <button class="whatsapp-scheduler-message-button" data-message="Oi,tudo bem? Sou entregador do Tenda">Oi. Entrega Tenda</button>
+        <button class="whatsapp-scheduler-message-button" data-message="Boa tarde. Poderia me enviar sua localização?">Localização</button>
+        <button class="whatsapp-scheduler-message-button" data-message="Boa tarde. Estou a caminho da sua entrega. Tenda Delivery.">A caminho</button>
+    </div>
+
+    <!-- Campo de mensagem -->
+    <textarea id="whatsapp-scheduler-message" class="whatsapp-scheduler-textarea" placeholder="Digite a mensagem..." readonly></textarea>
+
+    <!-- Botão de Enviar -->
+    <button id="whatsapp-scheduler-send" class="whatsapp-scheduler-button">Enviar WhatsApp</button>
+</div>
+
+
+
+
+        
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Controle de Saídas</h1>
+    <form id="expense-form">
+        <select id="driver-name" required>
+            <option value="" disabled selected> Selecione o Motorista</option>
+            <option value="Weverton">Weverton</option>
+            <option value="Alexandre">Alexandre</option>
+            <option value="Leandro">Leandro</option>
+            <option value="Antonio">Antonio Marcos</option>
+            <option value="Marcos">Marcos</option>
+            <option value="Alex">Alex Ressurreição</option>
+            <option value="Motorista2">Motorista2</option>
+            <option value="Motorista3">Motorista3</option>
+            <option value="Henrique">Henrique</option>
+            <option value="Alex">Alex</option>
+        </select>
+        <select id="store-name" required>
+            <option value="">Selecione a Loja</option>
+            <option value="Tenda Itanhaém">Tenda Itanhaém</option>
+            <option value="Tenda Praia Grande">Tenda Praia Grande</option>
+            <option value="Krill Cubatão">Krill Cubatão</option>
+            <option value="Krill Mongaguá">Krill Mongaguá</option>
+            <option value="Krill Praia Grande">Krill Praia Grande</option>
+            <option value="Carrefour São Vicente">Carrefour São Vicente</option>
+        </select>
+        <input type="number" id="expense-amount" placeholder="Valor da Saída" required>
+        <input type="number" id="received-amount" placeholder="Valor Recebido" required>
+        <input type="number" id="expense-weight" placeholder="Peso (kg)" required>
+        <input type="number" id="expense-nfs" placeholder="Qtd NFs:" name="expense-nfs" min="1" value="1" required>
+
+
+        <input type="date" id="expense-date" required>
+        <button type="submit"><i class="fa-solid fa-plus" style="color: #ffffff;"></i> Adicionar Saída</button>
+    </form>
+
+    <div class="expense-list">
+        <div class="filters">
+            <button id="toggle-filters">
+    <i class="fa-solid fa-filter" style="color: #ffffff;"></i>
+    <span>Exibir Filtros</span> <!-- Texto dentro de um span -->
+</button>
+            <div id="filter-section" style="display: none;">
+                
+                <input type="date" id="filter-start-date" placeholder="Data Início">
+                <input type="date" id="filter-end-date" placeholder="Data Fim">
+                
+                <select id="filter-driver">
+                    <option value="">Selecione o Motorista</option> <!-- Opção para não aplicar filtro -->
+                    <option value="Weverton">Weverton</option>
+                    <option value="Alexandre">Alexandre</option>
+                    <option value="Leandro">Leandro</option>
+                    <option value="Antonio">Antonio Marcos</option>
+                    <option value="Marcos">Marcos</option>
+                    <option value="Alex">Alex Ressurreição</option>
+                    <option value="Motorista2">Motorista2</option>
+                    <option value="Motorista3">Motorista3</option>
+                    <option value="Henrique">Henrique</option>
+                    <option value="Alex">Alex</option>
+                </select>
+                
+                <select id="filter-store">
+                    <option value="">Selecione a Loja</option>
+                    <option value="Tenda Itanhaém">Tenda Itanhaém</option>
+                    <option value="Tenda Praia Grande">Tenda Praia Grande</option>
+                    <option value="Krill Cubatão">Krill Cubatão</option>
+                    <option value="Krill Mongaguá">Krill Mongaguá</option>
+                    <option value="Krill Praia Grande">Krill Praia Grande</option>
+                    <option value="Carrefour São Vicente">Carrefour São Vicente</option>
+                </select>
+            </div>
+        </div>
+
+<div class="total">
+        <h2>Pagamento Motorista: R$<span id="total-amount">0.00</span></h2>
+        <h2>Lucro Total: R$<span style="color: green;" id="total-profit">0.00</span></h2>
+</div>
+
+        
+        <h2>Saídas</h2>
+        <ul id="expenses"></ul>
+    </div>
+
+    
+<div class="action-buttons">
+    <button id="export-excel"><i class="fa-solid fa-lg fa-file-excel" style="color: white;"></i> Excel</button>
+    <button id="send-whatsapp"> <i class="fa-brands fa-lg fa-whatsapp" style="color: white;"></i> WhatsApp</button>
+    <button id="download-pdf"><i class="fa-solid fa-lg fa-file-pdf" style="color: white;"></i> PDF</button>
+</div>
+    <!-- Botão para baixar o PDF -->
+    
+</div>
+
+<script>
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+    const toggleFiltersButton = document.getElementById('toggle-filters');
+    const filterSection = document.getElementById('filter-section');
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    toggleFiltersButton.addEventListener('click', () => {
+    const isHidden = filterSection.style.display === 'none';
+    filterSection.style.display = isHidden ? 'block' : 'none';
+    
+    // Altera apenas o texto dentro do <span>
+    const span = toggleFiltersButton.querySelector('span');
+    span.textContent = isHidden ? 'Ocultar Filtros' : 'Exibir Filtros';
+});
+
+
+
+    //falar e transcrever 
+    function iniciarReconhecimento() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'pt-BR'; // Define o idioma para português do Brasil
+      recognition.onresult = function(event) {
+        const transcricao = event.results[0][0].transcript;
+        document.getElementById('whatsapp-scheduler-number').value = transcricao;
+      };
+      recognition.start(); // Inicia o reconhecimento de fala
+    }
+
+    
+    
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

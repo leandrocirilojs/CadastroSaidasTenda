@@ -1,0 +1,173 @@
+/* Estilos gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura total da tela */
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #25D366;
+    color: #fff;
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
+
+.search-bar {
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    background-color: #fff;
+    justify-content: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #f1f1f1;
+    margin-bottom: 5px;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.send-button {
+    background-color: #25D366;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #20b558;
+}
+
+main {
+    padding: 10px;
+    flex: 1; /* Faz com que o main ocupe o espaço restante */
+}
+
+.chat {
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.chat:hover {
+    transform: scale(1.02);
+}
+
+.chat img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-info h2 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.chat-info p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.time {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #ffffff;
+    border-top: 1px solid #e6e6e6;
+    position: fixed; /* Fixa o footer na parte inferior */
+    left: 0;
+    bottom: 0; /* Define a posição do footer na parte inferior */
+    width: 100%; /* Faz o footer ocupar toda a largura da tela */
+}
+
+.footer-icon {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.footer-icon.active {
+    color: #25D366;
+    font-weight: bold;
+}
+
+a{
+    text-decoration: none;
+    color: violet;
+}
+
+.remove-button {
+    background-color: red;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+    margin-right: 4px;
+}
+
+.remove-button:hover {
+    background-color: #ff4242;
+}
+footer input {
+    background-color: white;
+    border-radius: 3px;
+    padding: 5px;
+    border: none;
+    width: 200px; /* Ajuste a largura conforme necessário */
+    margin-left: 10px; /* Adiciona um espaço entre os ícones do footer */
+}
