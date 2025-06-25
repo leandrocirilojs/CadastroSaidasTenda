@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeliveryContato</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="stylesChat.css.css">
+</head>
+<body>
+    <header>
+        <h1>Meus Contatos</h1>
+    </header>
+
+    <div class="search-bar">
+        <div class="input-group">
+            <input type="text" id="phone-input" placeholder="Digite o número de telefone">
+            <textarea id="message-input" placeholder="Digite sua mensagem" rows="3"></textarea>
+        </div>
+        <button onclick="addContact()" class="send-button">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+
+    <main id="chat-list">
+        <!-- Contatos serão carregados aqui pelo JavaScript -->
+    </main>
+
+    <footer>
+        <div class="footer-icon active">Pesquisar</div>
+        
+        <input type="text" id="search-input" placeholder="Pesquisar contatos" oninput="searchContacts()" style="margin-left: 10px; border-radius: 5px; padding: 5px; border: 1px solid #ccc;">
+    </footer>
+    <div id="notification" style="display:none; position: fixed; bottom: 40px; right: 10px; background: #25D366; color: white; padding: 10px; border-radius: 5px;">Contato adicionado!</div>
+
+    <script src="scriptChat.js"></script>
+</body>
+</html>
