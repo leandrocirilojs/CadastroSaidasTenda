@@ -89,40 +89,50 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Adicionar nova saída
-    expenseForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const driver = document.getElementById('driver-name').value;
-        const store = document.getElementById('store-name').value;
-        const amount = document.getElementById('expense-amount').value;
-        const received = document.getElementById('received-amount').value;
-        const date = document.getElementById('expense-date').value;
-        const profit = (received - amount).toFixed(2);
-        const weight = document.getElementById('expense-weight').value;
-        const nfs = document.getElementById('expense-nfs').value;
+   expenseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
+    const driver = document.getElementById('driver-name').value;
+    const store = document.getElementById('store-name').value;
+    let amount = document.getElementById('expense-amount').value;
+    const received = document.getElementById('received-amount').value;
+    const date = document.getElementById('expense-date').value;
+    const weight = document.getElementById('expense-weight').value;
+    const nfs = document.getElementById('expense-nfs').value;
 
+    // 🔹 Regras automáticas para valor
+    if (driver === "Weverton" || driver === "Alexandre") {
+        amount = 160;
+    } else if (driver === "Flavio") {
+        amount = 150;
+    } else if (driver === "Marcos" || driver === "Alex" || driver === "Leandro") {
+        amount = 0;
+    }
 
-        const expense = {
-    driver,
-    store,
-    amount,
-    received,
-    profit,
-    date,
-    weight,
-    nfs
-};
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        expenses.push(expense);
-        localStorage.setItem('expenses', JSON.stringify(expenses));
+    const profit = (received - amount).toFixed(2);
 
-        //loadExpenses();  // Carrega a lista após adicionar uma nova saída
-        if(filterStartDate && filterEndDate) {
-    const today = new Date().toISOString().split('T')[0];
-    filterStartDate.value = today;
-    filterEndDate.value = today;
-    applyFilters();
-}
+    const expense = {
+        driver,
+        store,
+        amount,
+        received,
+        profit,
+        date,
+        weight,
+        nfs
+    };
+
+    const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    expenses.push(expense);
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+
+    if (filterStartDate && filterEndDate) {
+        const today = new Date().toISOString().split('T')[0];
+        filterStartDate.value = today;
+        filterEndDate.value = today;
+        applyFilters();
+    }
+});
 
         // limpar todos os campos ^ expenseForm.reset();
     });
