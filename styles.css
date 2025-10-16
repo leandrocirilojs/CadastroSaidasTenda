@@ -108,11 +108,12 @@ button:hover {
             grid-template-columns: 1fr 1fr;
             gap: 25px;
             margin-bottom: 30px;
+    border-radius: 20px;
 }
 
 .total h2 {
     padding: 4px;
- border-radius: 10%;
+ 
     color: #14161a; /* Azul para os totais */
 }
 
