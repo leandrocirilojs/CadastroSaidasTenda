@@ -111,6 +111,8 @@ button:hover {
 }
 
 .total h2 {
+    padding: 4px;
+ border-radius: 10%;
     color: #14161a; /* Azul para os totais */
 }
 
