@@ -12,7 +12,7 @@ background: linear-gradient(90deg,rgba(0, 110, 107, 1) 0%, rgba(87, 152, 1, 1) 7
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
+    
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 /* Borda preta para contraste */
