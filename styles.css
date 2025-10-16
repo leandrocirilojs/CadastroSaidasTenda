@@ -1,8 +1,11 @@
 /* Estilos Gerais */
 body {
     font-family: Arial, sans-serif;
-background: #00006b;
-background: linear-gradient(90deg,rgba(0, 110, 107, 1) 0%, rgba(87, 152, 1, 1) 77%, rgba(255, 255, 255, 1) 100%);    margin: 0;
+background: #020024;
+background: -webkit-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(69, 9, 121, 1) 54%, rgba(82, 0, 117, 1) 100%);
+background: -moz-linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(69, 9, 121, 1) 54%, rgba(82, 0, 117, 1) 100%);
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(69, 9, 121, 1) 54%, rgba(82, 0, 117, 1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024", endColorstr="#520075", GradientType=1); 
     padding: 0;
     color: #333;
 }
