@@ -1,18 +1,18 @@
-/* Estilos Gerais - Futurista */
+/* Estilos Gerais - Futurista (Versão 2 com Menu Hambúrguer Sempre Visível) */
 body {
-    font-family: 'Consolas', 'Courier New', monospace; /* Fonte tecnológica */
-    background-color: #0a0a0a; /* Fundo preto profundo */
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #0a0a0a;
     margin: 0;
     padding: 0;
-    color: #e0e0e0; /* Texto cinza claro */
+    color: #e0e0e0;
     line-height: 1.6;
     transition: background-color 0.5s;
 }
 
 /* Cores Neon */
 :root {
-    --neon-blue: #00ffff; /* Ciano/Azul Elétrico */
-    --neon-magenta: #ff00ff; /* Magenta */
+    --neon-blue: #00ffff;
+    --neon-magenta: #ff00ff;
     --dark-bg: #1a1a1a;
     --light-bg: #2c2c2c;
 }
@@ -23,9 +23,9 @@ body {
     margin: 40px auto;
     padding: 30px;
     background-color: var(--dark-bg);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 5px rgba(0, 255, 255, 0.1); /* Brilho Neon */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 5px rgba(0, 255, 255, 0.1);
     border-radius: 10px;
-    border: 1px solid var(--neon-blue); /* Borda de energia */
+    border: 1px solid var(--neon-blue);
 }
 
 /* Cabeçalhos - Destaque Neon */
@@ -143,7 +143,7 @@ button {
 
 /* Botão Remover Saída */
 .expense-list button {
-    background-color: #cc0000; /* Vermelho de Alerta */
+    background-color: #cc0000;
     color: #fff;
     padding: 8px 12px;
     font-size: 14px;
@@ -182,7 +182,7 @@ button {
 }
 
 #total-profit {
-    color: #00ff00; /* Verde Neon para Lucro */
+    color: #00ff00;
     text-shadow: 0 0 5px #00ff00;
 }
 
@@ -223,13 +223,13 @@ button {
     justify-content: space-between;
     align-items: center;
     padding: 15px 25px;
-    background-color: #000000; /* Preto absoluto */
+    background-color: #000000;
     color: #fff;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Brilho na borda */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 .logo h1 {
@@ -245,31 +245,9 @@ button {
     text-shadow: 0 0 5px var(--neon-magenta);
 }
 
-/* Menu de Navegação - Links de Comando */
-.nav {
-    display: flex;
-    align-items: center;
-}
-
-.nav a {
-    text-decoration: none;
-    color: #cccccc;
-    font-weight: 500;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: color 0.3s, background-color 0.3s, text-shadow 0.3s;
-}
-
-.nav a:hover {
-    color: var(--neon-blue);
-    background-color: rgba(0, 255, 255, 0.1);
-    text-shadow: 0 0 5px var(--neon-blue);
-}
-
-/* Menu Toggle (Hambúrguer) */
+/* Menu Toggle (Hambúrguer) - SEMPRE VISÍVEL */
 .menu-toggle {
-    display: none;
+    display: flex; /* Garante que esteja sempre visível */
     flex-direction: column;
     cursor: pointer;
     padding: 5px;
@@ -283,6 +261,31 @@ button {
     border-radius: 2px;
     transition: 0.4s;
     box-shadow: 0 0 3px var(--neon-magenta);
+}
+
+/* Menu de Navegação (Lateral) */
+.nav {
+    /* Remove o display: flex/none padrão para desktop */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px; /* Largura do menu lateral */
+    height: 100%;
+    background: #000000;
+    padding: 25px;
+    box-shadow: -5px 0 15px rgba(255, 0, 255, 0.5);
+    color: var(--neon-blue);
+    text-align: left;
+    transform: translateX(100%); /* Escondido por padrão */
+    transition: transform 0.4s ease-in-out;
+    border-left: 2px solid var(--neon-magenta);
+    z-index: 999; /* Abaixo do header, mas acima do conteúdo */
+    box-sizing: border-box;
+}
+
+/* Menu Ativo (Aberto) */
+.nav.active {
+    transform: translateX(0); /* Mostra o menu */
 }
 
 /* Ajuste para o conteúdo não ficar coberto */
@@ -315,7 +318,7 @@ button {
 }
 
 #export-excel {
-    background-color: #008000; /* Verde Escuro */
+    background-color: #008000;
     color: #fff;
 }
 
@@ -335,7 +338,7 @@ button {
 }
 
 #download-pdf {
-    background-color: #800080; /* Roxo Escuro */
+    background-color: #800080;
     color: #fff;
 }
 
@@ -344,26 +347,16 @@ button {
     box-shadow: 0 0 10px #ff00ff;
 }
 
-/* Estilos para o WhatsApp Scheduler (Menu Lateral) */
+/* Estilos para o WhatsApp Scheduler (dentro do .nav) */
 .whatsapp-scheduler-container {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 320px;
-    height: 100%;
-    background: #000000;
-    padding: 25px;
-    box-shadow: -5px 0 15px rgba(255, 0, 255, 0.5);
-    color: var(--neon-blue);
+    /* Remove estilos de posicionamento que conflitam com o .nav */
+    position: static;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    max-width: none;
     text-align: left;
-    transform: translateX(100%);
-    transition: transform 0.4s ease-in-out;
-    border-left: 2px solid var(--neon-magenta);
-}
-
-.nav.active .whatsapp-scheduler-container {
-    transform: translateX(0);
 }
 
 .whatsapp-scheduler-container h1 {
@@ -467,9 +460,8 @@ button {
         gap: 10px;
     }
 
-    .whatsapp-scheduler-container {
-        width: 100%;
-        box-shadow: 0 4px 12px rgba(255, 0, 255, 0.5);
+    .nav {
+        width: 100%; /* Ocupa toda a largura em mobile */
     }
 
     .action-buttons {
