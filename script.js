@@ -325,10 +325,10 @@ function exportToExcel() {
     const data = filteredExpenses.map(expense => [
         expense.driver,    // Motorista
         expense.store,     // Loja
-        expense.amount,    // Valor Pago
+        expense.date,    // Valor Pago
         expense.received,  // Valor Recebido
         expense.profit,    // Lucro
-        expense.date,      // Data
+        expense.amount,      // Data
         expense.weight,    // Peso (kg)
         expense.nfs        // Qtd NFs
     ]);
