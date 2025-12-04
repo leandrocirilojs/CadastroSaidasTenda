@@ -348,7 +348,7 @@ function exportToExcel() {
 
     // Cabeçalho da planilha
     const ws = XLSX.utils.aoa_to_sheet([
-        ['Motorista', 'Loja', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Data', 'Peso (kg)', 'Qtd NFs'],
+        ['Motorista', 'Data', 'Loja', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
         ...data
     ]);
 
