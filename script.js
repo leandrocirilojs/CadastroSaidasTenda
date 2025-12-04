@@ -325,12 +325,13 @@ function exportToExcel() {
     const data = filteredExpenses.map(expense => [
         expense.driver,    // Motorista
         expense.date, //Data
-        expense.store,    // Loja
+        expense.store, // Loja
+        expense.nfs, //Qtd NFs
         expense.received,  // Valor Recebido
         expense.profit,    // Lucro
-        expense.amount,      // 
+        expense.amount,      // Valor Pago
         expense.weight,    // Peso (kg)
-        expense.nfs        // Qtd NFs
+        
     ]);
 
     // Cálculos de totais
@@ -348,7 +349,7 @@ function exportToExcel() {
 
     // Cabeçalho da planilha
     const ws = XLSX.utils.aoa_to_sheet([
-        ['Motorista', 'Data', 'Loja', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
+        ['Transportador Motorista', 'Data Saída', 'Loja Saída', 'Notas e Viagens', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
         ...data
     ]);
 
