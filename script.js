@@ -324,11 +324,11 @@ function exportToExcel() {
     // Use a variável filteredExpenses (já filtrada)
     const data = filteredExpenses.map(expense => [
         expense.driver,    // Motorista
-        expense.store,     // Loja
-        expense.date,    // Valor Pago
+        expense.date, //Data
+        expense.store,    // Loja
         expense.received,  // Valor Recebido
         expense.profit,    // Lucro
-        expense.amount,      // Data
+        expense.amount,      // 
         expense.weight,    // Peso (kg)
         expense.nfs        // Qtd NFs
     ]);
