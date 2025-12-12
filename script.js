@@ -334,6 +334,7 @@ function exportToExcel() {
         expense.profit,    // Lucro
         expense.amount,      // Valor Pago
         expense.weight,    // Peso (kg)
+        expense.nfs,
         
     ]);
 
