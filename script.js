@@ -333,8 +333,8 @@ function exportToExcel() {
         expense.received,  // Valor Recebido
     // expense.profit,    // Lucro
       //  expense.amount,      // Valor Pago
-        expense.weight,    // Peso (kg)
-        expense.nfs,
+        //expense.weight,    // Peso (kg)
+        expense.received,
         
     ]);
 
@@ -346,14 +346,17 @@ function exportToExcel() {
 
     // Adiciona uma linha em branco e linhas de totais
     data.push([]);
-    data.push(['Total de Saídas', totalSaidas]);
-    data.push(['Peso Total (kg)', pesoTotal.toFixed(2)]);
-    data.push(['Total de NFs', totalNfs]);
-    data.push(['Valor Total Recebido', `R$ ${valorTotal.toFixed(2)}`]);
+    data.push([]);
+    data.push([]);
+  
+    //data.push(['', '', '', '', '', '', '', totalSaidas]);
+    //data.push(['Peso Total (kg)', pesoTotal.toFixed(2)]);
+    //data.push(['Total de NFs', totalNfs]);
+    data.push(['', '', '', '', '', '', '', totalSaidas, `R$ ${valorTotal.toFixed(2)}`]);
 
     // Cabeçalho da planilha
     const ws = XLSX.utils.aoa_to_sheet([
-        ['TRANSPORTADOR MOTORISTA', 'DATA SAIDA', 'LOJA SAÍDA', 'INFORMAÇÕES ADICIONAIS  (NOTAS ADICIONAIS E SAIDAS A MAIS)', 'PEDAGIO ESTACIONAMENTO R$', 'KM EXCEDIDOS  R$', 'NOTAS E VIAGENS ADICIONAIS', 'FRETE EMBARCADO', 'PESO (kg)', 'QTD NFs'],
+        ['TRANSPORTADOR MOTORISTA', 'DATA SAIDA', 'LOJA SAÍDA', 'INFORMAÇÕES ADICIONAIS  (NOTAS ADICIONAIS E SAIDAS A MAIS)', 'PEDAGIO ESTACIONAMENTO R$', 'KM EXCEDIDOS  R$', 'NOTAS E VIAGENS ADICIONAIS', 'FRETE EMBARCADO', 'FRETE TOTAL R$'],
         ...data
     ]);
 
