@@ -331,7 +331,7 @@ function exportToExcel() {
         expense.profit,    // Lucro
         expense.amount,      // Valor Pago
         expense.weight,    // Peso (kg)
-        expense.infor,
+        
     ]);
 
     // Cálculos de totais
@@ -349,7 +349,7 @@ function exportToExcel() {
 
     // Cabeçalho da planilha
     const ws = XLSX.utils.aoa_to_sheet([
-        ['Transportador Motorista', 'Data Saída', 'Loja Saída', 'onformacoes', 'Notas e Viagens', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
+        ['Transportador Motorista', 'Data Saída', 'Loja Saída', 'INFORMAÇÕES ADICIONAIS  (NOTAS ADICIONAIS E SAIDAS A MAIS)', 'PEDAGIO ESTACIONAMENTO R$', 'KM EXCEDIDOS  R$', 'Notas e Viagens', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
         ...data
     ]);
 
