@@ -326,6 +326,9 @@ function exportToExcel() {
         expense.driver,    // Motorista
         expense.date, //Data
         expense.store, // Loja
+        expense.infor,
+        expense.pedEstacionamento,
+        expense.km,
         expense.nfs, //Qtd NFs
         expense.received,  // Valor Recebido
         expense.profit,    // Lucro
@@ -349,7 +352,7 @@ function exportToExcel() {
 
     // Cabeçalho da planilha
     const ws = XLSX.utils.aoa_to_sheet([
-        ['Transportador Motorista', 'Data Saída', 'Loja Saída', 'INFORMAÇÕES ADICIONAIS  (NOTAS ADICIONAIS E SAIDAS A MAIS)', 'PEDAGIO ESTACIONAMENTO R$', 'KM EXCEDIDOS  R$', 'Notas e Viagens', 'Valor Pago', 'Valor Recebido', 'Lucro', 'Peso (kg)', 'Qtd NFs'],
+        ['TRANSPORTADOR MOTORISTA', 'DATA SAIDA', 'LOJA SAÍDA', 'INFORMAÇÕES ADICIONAIS  (NOTAS ADICIONAIS E SAIDAS A MAIS)', 'PEDAGIO ESTACIONAMENTO R$', 'KM EXCEDIDOS  R$', 'NOTAS E VIAGENS', 'VALOR PAGO', 'VALOR RECEBIDO', 'LUCRO', 'PESO (kg)', 'QTD NFs'],
         ...data
     ]);
 
