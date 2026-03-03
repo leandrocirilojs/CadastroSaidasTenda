@@ -2,8 +2,8 @@
 body {
     font-family: Arial, sans-serif;
 background: #00006b;
-background: linear-gradient(90deg,rgba(0, 0, 107, 1) 0%, rgba(87, 152, 199, 1) 77%, rgba(255, 255, 255, 1) 100%);    margin: 0;
-    padding: 0;
+background: #009129;
+background: linear-gradient(0deg, rgba(0, 145, 41, 1) 0%, rgba(122, 255, 178, 1) 54%, rgba(191, 255, 191, 1) 100%);   padding: 0;
     color: #333;
 }
 
