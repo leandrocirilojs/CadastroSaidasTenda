@@ -234,15 +234,7 @@
 
 
     //falar e transcrever 
-    function iniciarReconhecimento() {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = 'pt-BR'; // Define o idioma para português do Brasil
-      recognition.onresult = function(event) {
-        const transcricao = event.results[0][0].transcript;
-        document.getElementById('whatsapp-scheduler-number').value = transcricao;
-      };
-      recognition.start(); // Inicia o reconhecimento de fala
-    }
+    
 
     
     
