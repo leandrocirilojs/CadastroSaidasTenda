@@ -1,10 +1,11 @@
-const CACHE_NAME = 'mrl-log-v2';
+const CACHE_NAME = 'mrl-log-v3';
 
 const urlsToCache = [
   './',
   './index.html',
   './styles.css',
   './script.js',
+  './vozIA.js',
   'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js',
