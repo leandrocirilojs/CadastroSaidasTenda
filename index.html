@@ -1,246 +1,555 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <meta charset="UTF-8">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-<link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/leandrocirilojs/TransporteLMR/3d3e0727935835ee42b9aabbca506cea40d3d2db/favicon.svg">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle Saídas MRL</title>
-    <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle Saídas MRL</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/leandrocirilojs/TransporteLMR/3d3e0727935835ee42b9aabbca506cea40d3d2db/favicon.svg">
 
-<!-- PWA Ficou Bom-->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ba7dff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="MRL Log">
-<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ba7dff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MRL Log">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 
-    
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(reg => console.log('SW registrado:', reg.scope))
-        .catch(err => console.log('SW erro:', err));
-    });
-  }
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => console.log('SW registrado:', reg.scope))
+          .catch(err => console.log('SW erro:', err));
+      });
+    }
+  </script>
 
+  <style>
+    .input-container { position: relative; width: 100%; }
+    .input-container input { width: 100%; padding-right: 40px; box-sizing: border-box; }
+    .input-container i { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: white; }
+    .input-container i:hover { color: #ba7dff; }
 
-    
+    /* Painel WhatsApp flutuante */
+    .whatsapp-scheduler-container {
+      display: none;
+      position: fixed !important;
+      bottom: 90px !important; right: 16px !important;
+      top: auto !important; left: auto !important;
+      width: 300px !important;
+      max-width: calc(100vw - 32px) !important;
+      z-index: 9997 !important;
+    }
+    .whatsapp-scheduler-container.aberto { display: block !important; }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-      
-<style>
-    .input-container {
-  position: relative;
-  width: 100%; /* Ajuste conforme necessário */
-}
+    /* === FAB MENU === */
+    #fab-menu { position: fixed; bottom: 20px; right: 16px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 
-.input-container input {
-  width: 100%;
-  padding-right: 40px; /* Espaço para o ícone */
-  box-sizing: border-box;
-}
+    #fab-toggle {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: linear-gradient(135deg, #7e00ff, #ba7dff);
+      border: none; color: white; font-size: 24px;
+      cursor: pointer; box-shadow: 0 4px 24px rgba(126,0,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s, box-shadow 0.3s; padding: 0;
+      position: relative; z-index: 2;
+    }
+    #fab-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(126,0,255,0.8); }
+    #fab-toggle.aberto { transform: rotate(45deg); }
 
-.input-container i {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: white;
-}
+    #fab-items { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    #fab-items .fab-item {
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateY(16px) scale(0.85);
+      transition: opacity 0.22s, transform 0.22s;
+      pointer-events: none; visibility: hidden;
+    }
+    #fab-items.aberto .fab-item { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; visibility: visible; }
+    #fab-items.aberto .fab-item:nth-child(1) { transition-delay: 0.08s; }
+    #fab-items.aberto .fab-item:nth-child(2) { transition-delay: 0.06s; }
+    #fab-items.aberto .fab-item:nth-child(3) { transition-delay: 0.04s; }
+    #fab-items.aberto .fab-item:nth-child(4) { transition-delay: 0.02s; }
+    #fab-items.aberto .fab-item:nth-child(5) { transition-delay: 0s; }
 
-.input-container i:hover {
-  color: blue;
-}
-</style>
-    
+    .fab-label {
+      background: rgba(10,4,26,0.92); color: #e0d6f5;
+      font-size: 12px; font-weight: 600; padding: 5px 10px;
+      border-radius: 8px; border: 1px solid rgba(186,125,255,0.2);
+      white-space: nowrap; backdrop-filter: blur(8px);
+    }
+    .fab-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: none; color: white; font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s; padding: 0; flex-shrink: 0;
+    }
+    .fab-btn:hover { transform: scale(1.12); }
+    .fab-btn.verde   { background: linear-gradient(135deg, #1a7a3a, #25D366); box-shadow: 0 3px 14px rgba(37,211,102,0.45); }
+    .fab-btn.azul    { background: linear-gradient(135deg, #0070a8, #00b5f4); box-shadow: 0 3px 14px rgba(0,181,244,0.45); }
+    .fab-btn.vermelho{ background: linear-gradient(135deg, #7a1a1a, #dc3545); box-shadow: 0 3px 14px rgba(220,53,69,0.45); }
+    .fab-btn.roxo    { background: linear-gradient(135deg, #4a0099, #ba7dff); box-shadow: 0 3px 14px rgba(186,125,255,0.45); }
+    .fab-btn.wpp     { background: linear-gradient(135deg, #075e54, #25D366); box-shadow: 0 3px 14px rgba(37,211,102,0.45); }
+  </style>
 </head>
 <body>
 
-    
 <header class="header">
-    <div class="logo">
-        <h1><i class="fa-solid fa-dolly" style="color:#ba7dff ;"></i> MRL Log</h1>
-    </div>
-    <div class="menu-toggle" id="mobile-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>
-
-    <nav class="nav" id="nav-links">
-        <header class="whatsapp-header">
-    <div class="whatsapp-logo">
-        
-    
-        </header>
-
-<div class="whatsapp-scheduler-container zap">
- 
-    
-    
-    
-    <div class="input-container">
-    <input type="number" id="whatsapp-scheduler-number" class="whatsapp-scheduler-input" placeholder="Número com DDD">
- <i class="fas fa-microphone" onclick="iniciarReconhecimento()"></i>
-    </div> 
-    
-    
-    
-    
-    
-    <!-- Mensagens predefinidas -->
-    <div class="whatsapp-scheduler-message-options">
-            <button class="whatsapp-scheduler-message-button" data-message="Boa tarde. Oi,tudo bem? Sou entregador do Tenda">Oi. Entrega Tenda</button>
-        <button class="whatsapp-scheduler-message-button" data-message="Poderia me enviar sua localização?">Localização</button>
-        <button class="whatsapp-scheduler-message-button" data-message="Estou a caminho da sua entrega. Tenda Delivery.">A caminho</button>
-    </div>
-
-    <!-- Campo de mensagem -->
-    <textarea id="whatsapp-scheduler-message" class="whatsapp-scheduler-textarea" placeholder="Digite a mensagem..." readonly></textarea>
-
-    <!-- Botão de Enviar -->
-    <button id="whatsapp-scheduler-send" class="whatsapp-scheduler-button">Enviar WhatsApp</button>
-</div>
-
-
-
-
-        
-    </nav>
+  <div class="logo">
+    <h1><i class="fa-solid fa-dolly" style="color:#ba7dff;"></i> MRL Log</h1>
+  </div>
+  <div class="menu-toggle" id="mobile-menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </div>
+  <nav class="nav" id="nav-links"></nav>
 </header>
 
-<div class="container">
-    <h1>Controle de Saídas</h1>
-    <form id="expense-form">
-        <select id="driver-name" required>
-            <option value="" disabled selected> Selecione o Motorista</option>
-            <option value="Weverton">Weverton</option>
-            <option value="Alexandre">Alexandre</option>
-            <option value="Leandro">Leandro</option>
-            <option value="Antonio">Antonio Marcos</option>
-            <option value="Marcos">Marcos</option>
-            <option value="Motorista1">Motorista1</option>
-            <option value="Motorista2">Motorista2</option>
-            <option value="Flavio">Flavio</option>
-            <option value="Henrique">Henrique</option>
-            <option value="Alex">Alex</option>
-        </select>
-        <select id="store-name" required>
-            <option value="">Selecione a Loja</option>
-            <option value="Tenda Itanhaém">Tenda Itanhaém</option>
-            <option value="Tenda Praia Grande">Tenda Praia Grande</option>
-            <option value="Krill Cubatão">Krill Cubatão</option>
-            <option value="Krill Mongaguá">Krill Mongaguá</option>
-            <option value="Krill Praia Grande">Krill Praia Grande</option>
-            <option value="Carrefour São Vicente">Carrefour São Vicente</option>
-        </select>
-        <input type="number" id="expense-amount" placeholder="Valor da Saída" required>
-        <input type="number" id="received-amount" placeholder="Valor Recebido" required>
-        <input type="number" id="expense-weight" placeholder="Peso (kg)" required>
-        <input type="number" id="expense-nfs" placeholder="Qtd NFs:" name="expense-nfs" min="1" value="1" required>
-
-
-        <input type="date" id="expense-date" required>
-        <button type="submit"><i class="fa-solid fa-plus" style="color: #ffffff;"></i> Adicionar Saída</button>
-    </form>
-
-    <div class="expense-list">
-        <div class="filters">
-            <button id="toggle-filters">
-    <i class="fa-solid fa-filter" style="color: #ffffff;"></i>
-    <span>Exibir Filtros</span> <!-- Texto dentro de um span -->
-</button>
-            <div id="filter-section" style="display: none;">
-                
-                <input type="date" id="filter-start-date" placeholder="Data Início">
-                <input type="date" id="filter-end-date" placeholder="Data Fim">
-                
-                <select id="filter-driver">
-                    <option value="">Selecione o Motorista</option> <!-- Opção para não aplicar filtro -->
-                    <option value="Weverton">Weverton</option>
-                    <option value="Alexandre">Alexandre</option>
-                    <option value="Leandro">Leandro</option>
-                    <option value="Antonio">Antonio Marcos</option>
-                    <option value="Marcos">Marcos</option>
-                    <option value="Motorista1">Motorista1</option>
-                    <option value="Motorista2">Motorista2</option>
-                    <option value="Flavio">Flavio</option>
-                    <option value="Henrique">Henrique</option>
-                    <option value="Alex">Alex</option>
-                </select>
-                
-                <select id="filter-store">
-                    <option value="">Selecione a Loja</option>
-                    <option value="Tenda Itanhaém">Tenda Itanhaém</option>
-                    <option value="Tenda Praia Grande">Tenda Praia Grande</option>
-                    <option value="Krill Cubatão">Krill Cubatão</option>
-                    <option value="Krill Mongaguá">Krill Mongaguá</option>
-                    <option value="Krill Praia Grande">Krill Praia Grande</option>
-                    <option value="Carrefour São Vicente">Carrefour São Vicente</option>
-                </select>
-            </div>
-        </div>
-
-<div class="total">
-        <h2>Pagamento Motorista: R$<span id="total-amount">0.00</span></h2>
-        <h2>Lucro Total: R$<span style="color: green;" id="total-profit">0.00</span></h2>
+<!-- Painel WhatsApp (fora do nav, direto no body) -->
+<div class="whatsapp-scheduler-container zap">
+  <div class="input-container">
+    <input type="number" id="whatsapp-scheduler-number" class="whatsapp-scheduler-input" placeholder="Número com DDD">
+    <i class="fas fa-microphone" onclick="iniciarReconhecimento()"></i>
+  </div>
+  <div class="whatsapp-scheduler-message-options">
+    <button class="whatsapp-scheduler-message-button" data-message="Boa tarde. Oi,tudo bem? Sou entregador do Tenda">Oi. Entrega Tenda</button>
+    <button class="whatsapp-scheduler-message-button" data-message="Poderia me enviar sua localização?">Localização</button>
+    <button class="whatsapp-scheduler-message-button" data-message="Estou a caminho da sua entrega. Tenda Delivery.">A caminho</button>
+  </div>
+  <textarea id="whatsapp-scheduler-message" class="whatsapp-scheduler-textarea" placeholder="Digite a mensagem..." readonly></textarea>
+  <button id="whatsapp-scheduler-send" class="whatsapp-scheduler-button">Enviar WhatsApp</button>
 </div>
 
-        
-        <h2>Saídas</h2>
-        <ul id="expenses"></ul>
+<!-- FAB Menu -->
+<div id="fab-menu">
+  <div id="fab-items">
+    <div class="fab-item">
+      <span class="fab-label">WhatsApp Cliente</span>
+      <button class="fab-btn wpp" id="btn-wpp-flutuante" title="WhatsApp Clientes"><i class="fab fa-whatsapp"></i></button>
+    </div>
+    <div class="fab-item">
+      <span class="fab-label">Gráfico</span>
+      <button class="fab-btn roxo" id="show-chart" title="Gráfico"><i class="fa-solid fa-chart-bar"></i></button>
+    </div>
+    <div class="fab-item">
+      <span class="fab-label">PDF</span>
+      <button class="fab-btn vermelho" id="download-pdf" title="PDF"><i class="fa-solid fa-file-pdf"></i></button>
+    </div>
+    <div class="fab-item">
+      <span class="fab-label">WhatsApp Relatório</span>
+      <button class="fab-btn verde" id="send-whatsapp" title="WhatsApp Relatório"><i class="fa-brands fa-whatsapp"></i></button>
+    </div>
+    <div class="fab-item">
+      <span class="fab-label">Excel</span>
+      <button class="fab-btn azul" id="export-excel" title="Excel"><i class="fa-solid fa-file-excel"></i></button>
+    </div>
+  </div>
+  <button id="fab-toggle" title="Ações">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</div>
+
+<div class="container">
+  <h1>Controle de Saídas</h1>
+  <form id="expense-form">
+    <select id="driver-name" required>
+      <option value="" disabled selected>Selecione o Motorista</option>
+      <option value="Weverton">Weverton</option>
+      <option value="Alexandre">Alexandre</option>
+      <option value="Leandro">Leandro</option>
+      <option value="Antonio">Antonio Marcos</option>
+      <option value="Marcos">Marcos</option>
+      <option value="Motorista1">Motorista1</option>
+      <option value="Motorista2">Motorista2</option>
+      <option value="Flavio">Flavio</option>
+      <option value="Henrique">Henrique</option>
+      <option value="Alex">Alex</option>
+    </select>
+    <select id="store-name" required>
+      <option value="">Selecione a Loja</option>
+      <option value="Tenda Itanhaém">Tenda Itanhaém</option>
+      <option value="Tenda Praia Grande">Tenda Praia Grande</option>
+      <option value="Krill Cubatão">Krill Cubatão</option>
+      <option value="Krill Mongaguá">Krill Mongaguá</option>
+      <option value="Krill Praia Grande">Krill Praia Grande</option>
+      <option value="Carrefour São Vicente">Carrefour São Vicente</option>
+    </select>
+    <input type="number" id="expense-amount" placeholder="Valor da Saída" required>
+    <input type="number" id="received-amount" placeholder="Valor Recebido" required>
+    <input type="number" id="expense-weight" placeholder="Peso (kg)" required>
+    <input type="number" id="expense-nfs" placeholder="Qtd NFs:" name="expense-nfs" min="1" value="1" required>
+    <input type="date" id="expense-date" required>
+    <button type="submit"><i class="fa-solid fa-plus" style="color:#ffffff;"></i> Adicionar Saída</button>
+  </form>
+
+  <div class="expense-list">
+    <div class="filters">
+      <button id="toggle-filters">
+        <i class="fa-solid fa-filter" style="color:#ffffff;"></i>
+        <span>Exibir Filtros</span>
+      </button>
+      <div id="filter-section" style="display:none;">
+        <input type="date" id="filter-start-date">
+        <input type="date" id="filter-end-date">
+        <select id="filter-driver">
+          <option value="">Selecione o Motorista</option>
+          <option value="Weverton">Weverton</option>
+          <option value="Alexandre">Alexandre</option>
+          <option value="Leandro">Leandro</option>
+          <option value="Antonio">Antonio Marcos</option>
+          <option value="Marcos">Marcos</option>
+          <option value="Motorista1">Motorista1</option>
+          <option value="Motorista2">Motorista2</option>
+          <option value="Flavio">Flavio</option>
+          <option value="Henrique">Henrique</option>
+          <option value="Alex">Alex</option>
+        </select>
+        <select id="filter-store">
+          <option value="">Selecione a Loja</option>
+          <option value="Tenda Itanhaém">Tenda Itanhaém</option>
+          <option value="Tenda Praia Grande">Tenda Praia Grande</option>
+          <option value="Krill Cubatão">Krill Cubatão</option>
+          <option value="Krill Mongaguá">Krill Mongaguá</option>
+          <option value="Krill Praia Grande">Krill Praia Grande</option>
+          <option value="Carrefour São Vicente">Carrefour São Vicente</option>
+        </select>
+      </div>
     </div>
 
-    
-<div class="action-buttons">
-    <button id="export-excel"><i class="fa-solid fa-lg fa-file-excel" style="color: white;"></i>Excel</button>
-    <button id="send-whatsapp"> <i class="fa-brands fa-lg fa-whatsapp" style="color: white;"></i>WhatsApp</button>
-    <button id="download-pdf"><i class="fa-solid fa-lg fa-file-pdf" style="color: white;"></i>PDF</button>
-</div>
-    <!-- Botão para baixar o PDF -->
-    
+    <div class="total">
+      <h2>Pagamento Motorista: R$<span id="total-amount">0.00</span></h2>
+      <h2>Lucro Total: R$<span style="color:green;" id="total-profit">0.00</span></h2>
+    </div>
+
+    <h2>Saídas</h2>
+    <ul id="expenses"></ul>
+  </div>
+
+
+
+  <!-- POPUP GRÁFICO -->
+  <div id="chart-overlay" style="display:none; position:fixed; inset:0; background:rgba(5,2,18,0.92); z-index:10000; align-items:center; justify-content:center; padding:16px;">
+    <div id="chart-modal" style="
+      background: linear-gradient(145deg, #0f0626, #160a38);
+      border: 1px solid rgba(186,125,255,0.3);
+      border-radius: 20px;
+      padding: 28px 24px 24px;
+      width: 100%; max-width: 720px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 0 60px rgba(186,125,255,0.15);
+      position: relative;
+    ">
+      <!-- Header -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+        <div>
+          <h2 style="color:#ba7dff; font-size:16px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin:0;">
+            <i class="fa-solid fa-chart-bar" style="margin-right:8px;"></i>Relatório de Entregas
+          </h2>
+          <p id="chart-subtitle" style="color:rgba(186,125,255,0.5); font-size:12px; margin:4px 0 0;"></p>
+        </div>
+        <button onclick="fecharGrafico()" style="
+          background:rgba(220,53,69,0.15); border:1px solid rgba(220,53,69,0.3);
+          color:#ff6b7a; border-radius:8px; width:34px; height:34px;
+          font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        ">&times;</button>
+      </div>
+
+      <!-- Totais -->
+      <div id="chart-totals" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;"></div>
+
+      <!-- Gráfico Saídas -->
+      <div style="margin-bottom:28px;">
+        <p style="color:rgba(186,125,255,0.7); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Quantidade de Saídas por Motorista</p>
+        <div style="position:relative; height:200px;">
+          <canvas id="chartSaidas"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico Peso -->
+      <div style="margin-bottom:28px;">
+        <p style="color:rgba(255,160,60,0.8); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Peso Total Transportado (kg) por Motorista</p>
+        <div style="position:relative; height:200px;">
+          <canvas id="chartPeso"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico Lucro -->
+      <div style="margin-bottom:10px;">
+        <p style="color:rgba(37,211,102,0.8); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">💰 Lucro por Motorista (R$)</p>
+        <div style="position:relative; height:200px;">
+          <canvas id="chartLucro"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-    const menuToggle = document.getElementById('mobile-menu');
-    const navLinks = document.getElementById('nav-links');
-    const toggleFiltersButton = document.getElementById('toggle-filters');
-    const filterSection = document.getElementById('filter-section');
+  // Menu hambúrguer
+  document.getElementById('mobile-menu').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('active');
+  });
 
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+  // Toggle filtros
+  document.getElementById('toggle-filters').addEventListener('click', () => {
+    const fs = document.getElementById('filter-section');
+    const isHidden = fs.style.display === 'none';
+    fs.style.display = isHidden ? 'block' : 'none';
+    document.querySelector('#toggle-filters span').textContent = isHidden ? 'Ocultar Filtros' : 'Exibir Filtros';
+  });
+
+  // FAB Menu toggle
+  const fabToggle = document.getElementById('fab-toggle');
+  const fabItems  = document.getElementById('fab-items');
+  const painelWpp = document.querySelector('.whatsapp-scheduler-container');
+  const btnWpp    = document.getElementById('btn-wpp-flutuante');
+
+  function fecharFab() {
+    fabToggle.classList.remove('aberto');
+    fabItems.classList.remove('aberto');
+    fabToggle.innerHTML = '<i class="fa-solid fa-plus"></i>';
+  }
+
+  fabToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const aberto = fabItems.classList.toggle('aberto');
+    fabToggle.classList.toggle('aberto', aberto);
+    fabToggle.innerHTML = aberto ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-plus"></i>';
+    if (!aberto) {
+      painelWpp.classList.remove('aberto');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const fab = document.getElementById('fab-menu');
+    if (!fab.contains(e.target) && !painelWpp.contains(e.target)) {
+      fecharFab();
+      painelWpp.classList.remove('aberto');
+    }
+  });
+
+  // WhatsApp cliente — abre painel ao clicar no botão do FAB
+  btnWpp.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const aberto = painelWpp.classList.toggle('aberto');
+  });
+
+  // Mensagens predefinidas WhatsApp
+  document.querySelectorAll('.whatsapp-scheduler-message-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('whatsapp-scheduler-message').value = btn.getAttribute('data-message');
     });
+  });
 
-    toggleFiltersButton.addEventListener('click', () => {
-    const isHidden = filterSection.style.display === 'none';
-    filterSection.style.display = isHidden ? 'block' : 'none';
-    
-    // Altera apenas o texto dentro do <span>
-        //t
-    const span = toggleFiltersButton.querySelector('span');
-    span.textContent = isHidden ? 'Ocultar Filtros' : 'Exibir Filtros';
-});
-
-
-
-    //falar e transcrever 
-    
-
-    
-    
+  // Enviar WhatsApp cliente
+  document.getElementById('whatsapp-scheduler-send').addEventListener('click', () => {
+    const phone = document.getElementById('whatsapp-scheduler-number').value.trim().replace(/\D/g, '');
+    const msg = document.getElementById('whatsapp-scheduler-message').value.trim();
+    if (!phone) { alert('Insira o número!'); return; }
+    if (!msg) { alert('Selecione uma mensagem!'); return; }
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
 </script>
 
-<script src="script.js"></script>
+<!-- Firebase + lógica principal (DEVE ser type="module") -->
+<script type="module" src="script.js"></script>
+
+<!-- IA de Voz -->
 <script src="vozIA.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script>
+// === GRÁFICO DE ENTREGAS ===
+let chartSaidasInstance = null;
+let chartPesoInstance   = null;
+let chartLucroInstance  = null;
+
+// Pré-carrega imagem da Fiorino
+var fiorino_img = new Image();
+fiorino_img.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2NCAzNic+PHJlY3QgeD0nMicgeT0nMTAnIHdpZHRoPSc0NCcgaGVpZ2h0PScyMCcgcng9JzMnIGZpbGw9J3doaXRlJy8+PHJlY3QgeD0nNDQnIHk9JzE2JyB3aWR0aD0nMTQnIGhlaWdodD0nMTQnIHJ4PScyJyBmaWxsPSd3aGl0ZScvPjxwYXRoIGQ9J000NCAxNiBMNTIgMTYgTDU4IDI0IEw0NCAyNFonIGZpbGw9JyNkZGQnLz48Y2lyY2xlIGN4PScxMicgY3k9JzMxJyByPSc0JyBmaWxsPScjNTU1Jy8+PGNpcmNsZSBjeD0nMTInIGN5PSczMScgcj0nMicgZmlsbD0nI2NjYycvPjxjaXJjbGUgY3g9JzUwJyBjeT0nMzEnIHI9JzQnIGZpbGw9JyM1NTUnLz48Y2lyY2xlIGN4PSc1MCcgY3k9JzMxJyByPScyJyBmaWxsPScjY2NjJy8+PHJlY3QgeD0nNicgeT0nMTMnIHdpZHRoPScxNCcgaGVpZ2h0PSc5JyByeD0nMScgZmlsbD0nI2FhZDRmNScvPjxyZWN0IHg9JzIyJyB5PScxMycgd2lkdGg9JzEwJyBoZWlnaHQ9JzknIHJ4PScxJyBmaWxsPScjYWFkNGY1Jy8+PC9zdmc+';
+// Fallback: emoji van como canvas se a imagem não carregar
+var fiorino_img_ok = false;
+fiorino_img.onload  = function(){ fiorino_img_ok = true; };
+fiorino_img.onerror = function(){ fiorino_img_ok = false; };
+
+// Plugin Chart.js: desenha fiorino no final de cada barra
+var pluginFiorino = {
+  id: 'fiorino',
+  afterDatasetDraw: function(chart, args) {
+    var ctx = chart.ctx;
+    var meta = chart.getDatasetMeta(args.index);
+    if (!meta || !meta.data) return;
+    meta.data.forEach(function(bar, i) {
+      var val = chart.data.datasets[args.index].data[i];
+      if (!val) return;
+      var x = bar.x; // ponta direita da barra
+      var y = bar.y; // centro vertical
+      var h = Math.abs(bar.height || 24);
+      var iconH = Math.min(h * 1.1, 32);
+      var iconW = iconH * 1.8;
+      ctx.save();
+      if (fiorino_img_ok) {
+        ctx.drawImage(fiorino_img, x + 4, y - iconH / 2, iconW, iconH);
+      } else {
+        // Fallback: desenha um mini retângulo com texto 🚐
+        ctx.font = (iconH * 0.85) + 'px serif';
+        ctx.fillText('🚐', x + 4, y + iconH * 0.35);
+      }
+      ctx.restore();
+    });
+  }
+};
+
+document.getElementById('show-chart').addEventListener('click', abrirGrafico);
+
+function abrirGrafico() {
+  const dados = window.filteredExpenses || [];
+  if (!dados.length) { alert('Nenhuma saída filtrada para exibir no gráfico.'); return; }
+
+  const por = {};
+  dados.forEach(e => {
+    if (!por[e.driver]) por[e.driver] = { saidas: 0, peso: 0, lucro: 0 };
+    por[e.driver].saidas += 1;
+    por[e.driver].peso   += parseFloat(e.weight || 0);
+    por[e.driver].lucro  += parseFloat(e.profit || 0);
+  });
+
+  const motoristas  = Object.keys(por);
+  const qtdSaidas   = motoristas.map(m => por[m].saidas);
+  const qtdPeso     = motoristas.map(m => parseFloat(por[m].peso.toFixed(1)));
+  const qtdLucro    = motoristas.map(m => parseFloat(por[m].lucro.toFixed(2)));
+  const totalSaidas = qtdSaidas.reduce((a, b) => a + b, 0);
+  const totalPeso   = qtdPeso.reduce((a, b) => a + b, 0);
+  const totalLucro  = qtdLucro.reduce((a, b) => a + b, 0);
+
+  const sd = document.getElementById('filter-start-date')?.value || '';
+  const ed = document.getElementById('filter-end-date')?.value   || '';
+  document.getElementById('chart-subtitle').textContent =
+    sd && ed ? 'Período: ' + fmt(sd) + ' a ' + fmt(ed) : sd ? 'A partir de ' + fmt(sd) : 'Todos os períodos';
+
+  const lucroFormatado = 'R$ ' + totalLucro.toFixed(2).replace('.', ',');
+  document.getElementById('chart-totals').innerHTML =
+    card('#7e00ff','#ba7dff', totalSaidas, 'Total de Saídas') +
+    card('#b85000','#ff9a3c', totalPeso.toFixed(0) + ' kg', 'Peso Total') +
+    card('#006b3a','#25D366', lucroFormatado, 'Lucro Total') +
+    card('#005080','#00b5f4', motoristas.length, 'Motoristas');
+
+  const coresAzul    = ['#00b5f4','#0090d4','#00d4ff','#006fa8','#33c9ff','#0070a8','#1ad0ff','#004f80'];
+  const coresLaranja = ['#ff8c00','#ff6a00','#ffa500','#e65c00','#ffb347','#cc5500','#ffcc44','#dd6600'];
+
+  // Padding direito extra para caber o ícone
+  const baseOpts = {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    layout: { padding: { right: 56 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor:'rgba(15,6,38,0.95)', titleColor:'#ba7dff', bodyColor:'#e0d6f5',
+                 borderColor:'rgba(186,125,255,0.3)', borderWidth:1, padding:10, cornerRadius:8 }
+    },
+    scales: {
+      x: { grid:{color:'rgba(186,125,255,0.08)'}, ticks:{color:'rgba(186,125,255,0.5)',font:{size:11}}, border:{color:'rgba(186,125,255,0.15)'} },
+      y: { grid:{display:false}, ticks:{color:'#e0d6f5',font:{size:12,weight:'600'}}, border:{color:'rgba(186,125,255,0.15)'} }
+    }
+  };
+
+  if (chartSaidasInstance) { chartSaidasInstance.destroy(); chartSaidasInstance = null; }
+  if (chartPesoInstance)   { chartPesoInstance.destroy();   chartPesoInstance   = null; }
+  if (chartLucroInstance)  { chartLucroInstance.destroy();  chartLucroInstance  = null; }
+
+  chartSaidasInstance = new Chart(document.getElementById('chartSaidas'), {
+    type: 'bar',
+    data: { labels: motoristas, datasets: [{ data: qtdSaidas,
+      backgroundColor: motoristas.map(function(_,i){ return coresAzul[i % coresAzul.length]; }),
+      borderRadius: 6, borderSkipped: false }] },
+    options: Object.assign({}, baseOpts, { plugins: Object.assign({}, baseOpts.plugins, {
+      tooltip: Object.assign({}, baseOpts.plugins.tooltip, {
+        callbacks: { label: function(ctx){ return ' ' + ctx.raw + (ctx.raw > 1 ? ' saídas' : ' saída'); } }
+      })
+    })}),
+    plugins: [pluginFiorino]
+  });
+
+  chartPesoInstance = new Chart(document.getElementById('chartPeso'), {
+    type: 'bar',
+    data: { labels: motoristas, datasets: [{ data: qtdPeso,
+      backgroundColor: motoristas.map(function(_,i){ return coresLaranja[i % coresLaranja.length]; }),
+      borderRadius: 6, borderSkipped: false }] },
+    options: Object.assign({}, baseOpts, {
+      scales: Object.assign({}, baseOpts.scales, {
+        x: Object.assign({}, baseOpts.scales.x, { ticks:{color:'rgba(255,154,60,0.5)',font:{size:11}} })
+      }),
+      plugins: Object.assign({}, baseOpts.plugins, {
+        tooltip: Object.assign({}, baseOpts.plugins.tooltip, {
+          titleColor:'#ff9a3c',
+          callbacks: { label: function(ctx){ return ' ' + ctx.raw + ' kg'; } }
+        })
+      })
+    }),
+    plugins: [pluginFiorino]
+  });
+
+  // Cores verde para lucro — negativo fica vermelho
+  const coresVerde = qtdLucro.map(function(v) {
+    return v >= 0 ? '#25D366' : '#dc3545';
+  });
+
+  chartLucroInstance = new Chart(document.getElementById('chartLucro'), {
+    type: 'bar',
+    data: { labels: motoristas, datasets: [{ data: qtdLucro,
+      backgroundColor: coresVerde,
+      borderRadius: 6, borderSkipped: false }] },
+    options: Object.assign({}, baseOpts, {
+      layout: { padding: { right: 12 } },
+      scales: Object.assign({}, baseOpts.scales, {
+        x: Object.assign({}, baseOpts.scales.x, { ticks:{color:'rgba(37,211,102,0.5)',font:{size:11}} })
+      }),
+      plugins: Object.assign({}, baseOpts.plugins, {
+        tooltip: Object.assign({}, baseOpts.plugins.tooltip, {
+          titleColor:'#25D366',
+          callbacks: { label: function(ctx){ return ' R$ ' + ctx.raw.toFixed(2).replace('.',','); } }
+        })
+      })
+    })
+  });
+
+  document.getElementById('chart-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharGrafico() {
+  document.getElementById('chart-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('chart-overlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharGrafico();
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') fecharGrafico(); });
+
+function fmt(d) {
+  if (!d) return '';
+  var p = d.split('-');
+  return p[2] + '/' + p[1] + '/' + p[0];
+}
+
+function card(bg, accent, valor, label) {
+  return '<div style="background:rgba(' + hr(bg) + ',0.12);border:1px solid rgba(' + hr(accent) + ',0.25);border-radius:10px;padding:12px 16px;display:flex;flex-direction:column;min-width:110px;flex:1;">' +
+    '<span style="font-size:22px;font-weight:800;color:' + accent + ';">' + valor + '</span>' +
+    '<span style="font-size:11px;color:rgba(' + hr(accent) + ',0.6);margin-top:2px;">' + label + '</span>' +
+  '</div>';
+}
+
+function hr(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)].join(',');
+}
+</script>
 
 </body>
 </html>
