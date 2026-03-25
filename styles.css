@@ -1,40 +1,1056 @@
 /* ============================================
-   MRL LOG — ArcaneOS / AetherCore Theme
-   Where Magic Meets Machine
+   MRL LOG - Theme: Dark Purple / Icon Style
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
-
-/* === VARIABLES === */
-:root {
-  --void:        #05030f;
-  --deep:        #0a0520;
-  --surface:     #0f082a;
-  --card:        rgba(14, 7, 35, 0.92);
-  --card-border: rgba(138, 43, 226, 0.35);
-  --purple:      #8a2be2;
-  --purple-glow: #ba7dff;
-  --cyan:        #00d4ff;
-  --cyan-dim:    rgba(0, 212, 255, 0.6);
-  --text-main:   #e8e0ff;
-  --text-muted:  rgba(200, 180, 255, 0.5);
-  --green:       #00e676;
-  --red:         #ff4757;
-  --gold:        #ffd700;
-  --radius-sm:   8px;
-  --radius-md:   14px;
-  --radius-lg:   20px;
-  --radius-xl:   28px;
-  --font-display: 'Orbitron', sans-serif;
-  --font-body:    'Rajdhani', sans-serif;
-  --font-mono:    'Share Tech Mono', monospace;
+/* === RESET & BASE === */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-/* === RESET === */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #0a0618;
+    background-image:
+        linear-gradient(rgba(186, 125, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(186, 125, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: #e0d6f5;
+    min-height: 100vh;
+}
 
-/* === SCROLLBAR === */
-::-webkit-scrollbar { width: 5px; }
+/* === HEADER === */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: rgba(15, 8, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(186, 125, 255, 0.25);
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.logo h1 i {
+    color: #ba7dff !important;
+}
+
+/* === MENU TOGGLE (hambúrguer) === */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #ba7dff;
+    margin: 4px 0;
+    transition: 0.4s;
+    border-radius: 2px;
+}
+
+/* === NAV === */
+.nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav ul li { display: inline; }
+
+.nav ul li a {
+    text-decoration: none;
+    color: #e0d6f5;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nav ul li a:hover { color: #ba7dff; }
+
+/* === CONTAINER PRINCIPAL === */
+.container {
+    max-width: 800px;
+    margin: 80px auto 100px;
+    padding: 24px;
+    background-color: rgba(20, 10, 45, 0.85);
+    border: 1px solid rgba(186, 125, 255, 0.2);
+    box-shadow: 0 0 40px rgba(186, 125, 255, 0.08), 0 0 80px rgba(0,0,0,0.4);
+    border-radius: 16px;
+}
+
+/* === HEADINGS === */
+h1 {
+    text-align: center;
+    color: #ba7dff;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #d4aaff;
+    font-size: 18px;
+}
+
+/* === FORM === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* === INPUTS, SELECTS === */
+input, select {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    background-color: rgba(30, 15, 55, 0.9);
+    color: #e0d6f5;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+input::placeholder {
+    color: rgba(186, 125, 255, 0.4);
+}
+
+input:focus, select:focus {
+    border-color: #ba7dff;
+    box-shadow: 0 0 0 3px rgba(186, 125, 255, 0.15);
+}
+
+select option {
+    background-color: #1a0a35;
+    color: #e0d6f5;
+}
+
+/* === BOTÃO PRINCIPAL (Adicionar Saída) === */
+button {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    background-color: #7a3fd4;
+    color: #fff;
+}
+
+button:hover {
+    background-color: #9a5ff4;
+    box-shadow: 0 0 12px rgba(186, 125, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* === LISTA DE SAÍDAS === */
+.expense-list {
+    margin-top: 20px;
+}
+
+.expense-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.expense-list li {
+    background-color: rgba(30, 15, 60, 0.7);
+    margin: 4px 0;
+    padding: 8px 12px;
+    border: 1px solid rgba(186, 125, 255, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.expense-list li:hover {
+    background-color: rgba(186, 125, 255, 0.1);
+    border-color: rgba(186, 125, 255, 0.35);
+}
+
+/* === BOTÃO REMOVER === */
+.expense-list button {
+    background-color: #6b1f3a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.expense-list button:hover {
+    background-color: #a0263f;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+    transform: none;
+}
+
+/* === TOTAIS === */
+.total {
+    margin-top: 20px;
+    text-align: center;
+    padding: 16px;
+    background: rgba(186, 125, 255, 0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(186, 125, 255, 0.15);
+}
+
+.total h2 {
+    color: #d4aaff;
+    margin: 6px 0;
+}
+
+/* === FILTROS === */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters input, .filters select {
+    flex: 1;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    min-width: 120px;
+}
+
+.filters input:hover, .filters select:hover {
+    border-color: rgba(186, 125, 255, 0.5);
+    background-color: rgba(186, 125, 255, 0.05);
+}
+
+.filters button {
+    background-color: #4a2d8a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.filters button:hover {
+    background-color: #6a4daa;
+}
+
+/* === SEÇÃO DE FILTROS EXPANDIDA === */
+#filter-section {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#filter-section label {
+    width: 100%;
+    margin-top: 10px;
+    color: #d4aaff;
+}
+
+#filter-section select,
+#filter-section input {
+    width: calc(50% - 10px);
+    padding: 8px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    border-radius: 6px;
+    background-color: rgba(30, 15, 55, 0.9);
+    color: #e0d6f5;
+}
+
+#filter-section select:last-child,
+#filter-section input:last-child {
+    margin-right: 0;
+}
+
+/* === BOTÕES DE AÇÃO FIXOS (bottom) === */
+.action-buttons {
+    position: fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background-color: rgba(15, 8, 30, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(186, 125, 255, 0.25);
+    padding: 8px 16px;
+    border-radius: 50px;
+    box-shadow: 0 4px 24px rgba(186, 125, 255, 0.15), 0 2px 12px rgba(0,0,0,0.5);
+    z-index: 998;
+}
+
+#send-whatsapp, #download-pdf, #export-excel {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#export-excel {
+    background-color: #1a5c36;
+    color: white;
+}
+
+#export-excel:hover {
+    background-color: #247a48;
+    box-shadow: 0 0 10px rgba(26, 92, 54, 0.5);
+    transform: scale(1.05);
+}
+
+#send-whatsapp {
+    background-color: #1a7a45;
+    color: white;
+}
+
+#send-whatsapp:hover {
+    background-color: #25a85e;
+    box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+    transform: scale(1.05);
+}
+
+#download-pdf {
+    background-color: #7a1f2e;
+    color: white;
+}
+
+#download-pdf:hover {
+    background-color: #a0293d;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+    transform: scale(1.05);
+}
+
+/* === INPUT CONTAINER (microfone) === */
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.input-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #ba7dff;
+    transition: color 0.3s;
+}
+
+.input-container i:hover {
+    color: #d4aaff;
+}
+
+/* === WHATSAPP SCHEDULER === */
+.whatsapp-header { display: none; }
+
+.whatsapp-scheduler-container {
+    z-index: 1000;
+    position: absolute;
+    top: 10px;
+    margin: 10px auto;
+    background: linear-gradient(135deg, rgba(60, 20, 120, 0.97), rgba(20, 10, 50, 0.97));
+    border: 1px solid rgba(186, 125, 255, 0.35);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(186, 125, 255, 0.2), 0 0 60px rgba(0,0,0,0.6);
+    max-width: 600px;
+    color: white;
+    text-align: center;
+}
+
+.whatsapp-scheduler-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #ba7dff;
+}
+
+.whatsapp-scheduler-label {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 600;
+    color: #d4aaff;
+}
+
+.whatsapp-scheduler-input,
+.whatsapp-scheduler-textarea,
+.whatsapp-scheduler-button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    font-size: 1rem;
+    background-color: rgba(30, 10, 60, 0.9);
+    color: #e0d6f5;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-scheduler-input::placeholder {
+    color: rgba(186, 125, 255, 0.4);
+}
+
+.whatsapp-scheduler-input:focus,
+.whatsapp-scheduler-textarea:focus {
+    outline: none;
+    border-color: #ba7dff;
+    box-shadow: 0 0 10px rgba(186, 125, 255, 0.4);
+}
+
+.whatsapp-scheduler-textarea {
+    height: 120px;
+    resize: none;
+    font-family: 'Courier New', monospace;
+}
+
+.whatsapp-scheduler-message-options {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.whatsapp-scheduler-message-button {
+    padding: 8px 12px;
+    background-color: rgba(186, 125, 255, 0.15);
+    color: #e0d6f5;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.whatsapp-scheduler-message-button:hover {
+    background-color: rgba(186, 125, 255, 0.3);
+    transform: scale(1.04);
+    box-shadow: 0 0 8px rgba(186, 125, 255, 0.3);
+}
+
+.whatsapp-scheduler-button {
+    background-color: #1a7a45;
+    cursor: pointer;
+    font-weight: 700;
+    color: white;
+    border: none;
+}
+
+.whatsapp-scheduler-button:hover {
+    background-color: #25a85e;
+    box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+}
+
+/* === ZAP container position === */
+.zap {
+    right: 10px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .nav {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: rgba(15, 8, 30, 0.98);
+        width: 100%;
+        height: 100vh;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-top: 1px solid rgba(186, 125, 255, 0.2);
+    }
+
+    .nav ul {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    #filter-section select,
+    #filter-section input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 80px 12px 100px;
+        padding: 16px;
+    }
+
+    form, .filters {
+        flex-direction: column;
+    }
+
+    .filters input, .filters select {
+        margin-bottom: 8px;
+    }
+
+    .action-buttons {
+        gap: 6px;
+        padding: 6px 10px;
+    }
+
+    #send-whatsapp, #download-pdf, #export-excel {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+   }    box-sizing: border-box;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.logo h1 i {
+    color: #ba7dff !important;
+}
+
+/* === MENU TOGGLE (hambúrguer) === */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #ba7dff;
+    margin: 4px 0;
+    transition: 0.4s;
+    border-radius: 2px;
+}
+
+/* === NAV === */
+.nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav ul li { display: inline; }
+
+.nav ul li a {
+    text-decoration: none;
+    color: #e0d6f5;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nav ul li a:hover { color: #ba7dff; }
+
+/* === CONTAINER PRINCIPAL === */
+.container {
+    max-width: 800px;
+    margin: 80px auto 100px;
+    padding: 24px;
+    background-color: rgba(20, 10, 45, 0.85);
+    border: 1px solid rgba(186, 125, 255, 0.2);
+    box-shadow: 0 0 40px rgba(186, 125, 255, 0.08), 0 0 80px rgba(0,0,0,0.4);
+    border-radius: 16px;
+}
+
+/* === HEADINGS === */
+h1 {
+    text-align: center;
+    color: #ba7dff;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #d4aaff;
+    font-size: 18px;
+}
+
+/* === FORM === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* === INPUTS, SELECTS === */
+input, select {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    background-color: rgba(30, 15, 55, 0.9);
+    color: #e0d6f5;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+input::placeholder {
+    color: rgba(186, 125, 255, 0.4);
+}
+
+input:focus, select:focus {
+    border-color: #ba7dff;
+    box-shadow: 0 0 0 3px rgba(186, 125, 255, 0.15);
+}
+
+select option {
+    background-color: #1a0a35;
+    color: #e0d6f5;
+}
+
+/* === BOTÃO PRINCIPAL (Adicionar Saída) === */
+button {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    background-color: #7a3fd4;
+    color: #fff;
+}
+
+button:hover {
+    background-color: #9a5ff4;
+    box-shadow: 0 0 12px rgba(186, 125, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* === LISTA DE SAÍDAS === */
+.expense-list {
+    margin-top: 20px;
+}
+
+.expense-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.expense-list li {
+    background-color: rgba(30, 15, 60, 0.7);
+    margin: 4px 0;
+    padding: 8px 12px;
+    border: 1px solid rgba(186, 125, 255, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.expense-list li:hover {
+    background-color: rgba(186, 125, 255, 0.1);
+    border-color: rgba(186, 125, 255, 0.35);
+}
+
+/* === BOTÃO REMOVER === */
+.expense-list button {
+    background-color: #6b1f3a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.expense-list button:hover {
+    background-color: #a0263f;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+    transform: none;
+}
+
+/* === TOTAIS === */
+.total {
+    margin-top: 20px;
+    text-align: center;
+    padding: 16px;
+    background: rgba(186, 125, 255, 0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(186, 125, 255, 0.15);
+}
+
+.total h2 {
+    color: #d4aaff;
+    margin: 6px 0;
+}
+
+/* === FILTROS === */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters input, .filters select {
+    flex: 1;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    min-width: 120px;
+}
+
+.filters input:hover, .filters select:hover {
+    border-color: rgba(186, 125, 255, 0.5);
+    background-color: rgba(186, 125, 255, 0.05);
+}
+
+.filters button {
+    background-color: #4a2d8a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.filters button:hover {
+    background-color: #6a4daa;
+}
+
+/* === SEÇÃO DE FILTROS EXPANDIDA === */
+#filter-section {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#filter-section label {
+    width: 100%;
+    margin-top: 10px;
+    color: #d4aaff;
+}
+
+#filter-section select,
+#filter-section input {
+    width: calc(50% - 10px);
+    padding: 8px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    border-radius: 6px;
+    background-color: rgba(30, 15, 55, 0.9);
+    color: #e0d6f5;
+}
+
+#filter-section select:last-child,
+#filter-section input:last-child {
+    margin-right: 0;
+}
+
+/* === BOTÕES DE AÇÃO FIXOS (bottom) === */
+.action-buttons {
+    position: fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background-color: rgba(15, 8, 30, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(186, 125, 255, 0.25);
+    padding: 8px 16px;
+    border-radius: 50px;
+    box-shadow: 0 4px 24px rgba(186, 125, 255, 0.15), 0 2px 12px rgba(0,0,0,0.5);
+    z-index: 998;
+}
+
+#send-whatsapp, #download-pdf, #export-excel {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#export-excel {
+    background-color: #1a5c36;
+    color: white;
+}
+
+#export-excel:hover {
+    background-color: #247a48;
+    box-shadow: 0 0 10px rgba(26, 92, 54, 0.5);
+    transform: scale(1.05);
+}
+
+#send-whatsapp {
+    background-color: #1a7a45;
+    color: white;
+}
+
+#send-whatsapp:hover {
+    background-color: #25a85e;
+    box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+    transform: scale(1.05);
+}
+
+#download-pdf {
+    background-color: #7a1f2e;
+    color: white;
+}
+
+#download-pdf:hover {
+    background-color: #a0293d;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+    transform: scale(1.05);
+}
+
+/* === INPUT CONTAINER (microfone) === */
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.input-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #ba7dff;
+    transition: color 0.3s;
+}
+
+.input-container i:hover {
+    color: #d4aaff;
+}
+
+/* === WHATSAPP SCHEDULER === */
+.whatsapp-header { display: none; }
+
+.whatsapp-scheduler-container {
+    z-index: 1000;
+    position: absolute;
+    top: 10px;
+    margin: 10px auto;
+    background: linear-gradient(135deg, rgba(60, 20, 120, 0.97), rgba(20, 10, 50, 0.97));
+    border: 1px solid rgba(186, 125, 255, 0.35);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(186, 125, 255, 0.2), 0 0 60px rgba(0,0,0,0.6);
+    max-width: 600px;
+    color: white;
+    text-align: center;
+}
+
+.whatsapp-scheduler-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #ba7dff;
+}
+
+.whatsapp-scheduler-label {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 600;
+    color: #d4aaff;
+}
+
+.whatsapp-scheduler-input,
+.whatsapp-scheduler-textarea,
+.whatsapp-scheduler-button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    font-size: 1rem;
+    background-color: rgba(30, 10, 60, 0.9);
+    color: #e0d6f5;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-scheduler-input::placeholder {
+    color: rgba(186, 125, 255, 0.4);
+}
+
+.whatsapp-scheduler-input:focus,
+.whatsapp-scheduler-textarea:focus {
+    outline: none;
+    border-color: #ba7dff;
+    box-shadow: 0 0 10px rgba(186, 125, 255, 0.4);
+}
+
+.whatsapp-scheduler-textarea {
+    height: 120px;
+    resize: none;
+    font-family: 'Courier New', monospace;
+}
+
+.whatsapp-scheduler-message-options {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.whatsapp-scheduler-message-button {
+    padding: 8px 12px;
+    background-color: rgba(186, 125, 255, 0.15);
+    color: #e0d6f5;
+    border: 1px solid rgba(186, 125, 255, 0.3);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.whatsapp-scheduler-message-button:hover {
+    background-color: rgba(186, 125, 255, 0.3);
+    transform: scale(1.04);
+    box-shadow: 0 0 8px rgba(186, 125, 255, 0.3);
+}
+
+.whatsapp-scheduler-button {
+    background-color: #1a7a45;
+    cursor: pointer;
+    font-weight: 700;
+    color: white;
+    border: none;
+}
+
+.whatsapp-scheduler-button:hover {
+    background-color: #25a85e;
+    box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+}
+
+/* === ZAP container position === */
+.zap {
+    right: 10px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .nav {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: rgba(15, 8, 30, 0.98);
+        width: 100%;
+        height: 100vh;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-top: 1px solid rgba(186, 125, 255, 0.2);
+    }
+
+    .nav ul {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    #filter-section select,
+    #filter-section input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 80px 12px 100px;
+        padding: 16px;
+    }
+
+    form, .filters {
+        flex-direction: column;
+    }
+
+    .filters input, .filters select {
+        margin-bottom: 8px;
+    }
+
+    .action-buttons {
+        gap: 6px;
+        padding: 6px 10px;
+    }
+
+    #send-whatsapp, #download-pdf, #export-excel {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+}::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--void); }
 ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 4px; }
 
